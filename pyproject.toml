@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "amplify-utils"
+version = "0.0.1"
+authors = [
+  { name="Isaac Sánchez", email="isaacsancheza@outlook.com" },
+]
+description = "Amplify Utils"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["boto3"]
+
+[project.urls]
+"Homepage" = "https://github.com/isaacsancheza/amplify-utils"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
