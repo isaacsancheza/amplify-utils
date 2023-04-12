@@ -1,7 +1,7 @@
 import pytest
 from soteria import validators, normalizers
 from pydantic import BaseModel, ValidationError, validator
-from amplify_utils import dump_errors
+from amplify_utils import dump_errors, iso8601_utc_now, parse_iso8601_utc_date
 
 
 class Example(BaseModel):
@@ -38,3 +38,9 @@ def test_dump_errors():
         assert dump_errors(example.errors()) == {}
         example = Example(name='juan', phone='123 456 789', username='j1uan')
         assert dump_errors(example.errors()) == {}
+
+
+def test_iso8601():
+    utc_now = iso8601_utc_now()
+    assert utc_now == utc_now
+    assert parse_iso8601_utc_date(utc_now).isoformat() == utc_now
