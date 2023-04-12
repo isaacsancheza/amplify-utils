@@ -5,10 +5,11 @@ name = "pypi"
 
 [packages]
 amplify-utils = {editable = true, path = "."}
-boto3 = "*"
+soteria = {git = "https://github.com/isaacsancheza/soteria"}
 
 [dev-packages]
 pytest = "*"
+pydantic = "*"
 
 [requires]
 python_version = "3.8"

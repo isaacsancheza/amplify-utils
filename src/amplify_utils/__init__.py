@@ -1,17 +1,26 @@
-from json import loads, dumps
-from decimal import Decimal
-from boto3.dynamodb.types import TypeSerializer
+from typing import List
 
 
-serializer = TypeSerializer()
-
-
-def serialize(dictionary: dict):
+def dump_errors(errors: List[dict]) -> List[dict]:
     """
-    Serializes Python data types to DynamoDB types. 
-    TypeSerializer does not accept float. So, we convert float do Decimal
-    using serializing the direcctionary and descerializing it again.
-    """
-    return {
-        k: serializer.serialize(v) for k, v in loads(dumps(dictionary), parse_float=Decimal).items()
+    Dumps the errors into a list of dictionaries with the following structure:
+    {
+        'field': 'field_name',
+        'message': 'error_message'
     }
+    """
+    dumped_errors = []
+    for error in errors:
+        if len(error['loc']) > 1:
+            for field in error['loc']:
+                dumped_errors.append({
+                    'field': field,
+                    'message': error['msg']
+                })
+        else:
+            dumped_errors.append({
+                'field': error['loc'][0],
+                'message': error['msg']
+            })
+    return dumped_errors
+
