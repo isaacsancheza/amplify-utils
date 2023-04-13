@@ -7,7 +7,7 @@ def get_context(event: dict) -> dict:
     """
     Returns the user from the event.
     """
-    return loads(event['identity']['resolverContext'])
+    return loads(event['identity']['resolverContext']['context'])
 
 
 def parse_iso8601_utc_date(date_str: str) -> datetime:

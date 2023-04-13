@@ -50,7 +50,7 @@ def test_iso8601():
 def test_get_context():
     event = {
         'identity': {
-            'resolverContext': dumps({'id': 'user-id'})
+            'resolverContext': {'context': dumps({'id': 'user-id'})}
             }
         }
     assert amplify_utils.get_context(event) == {'id': 'user-id'}
