@@ -1,6 +1,13 @@
-from json import dumps
+from json import loads
 from typing import List
 from datetime import datetime
+
+
+def get_context(event: dict) -> dict:
+    """
+    Returns the user from the event.
+    """
+    return loads(event['identity']['resolverContext'])
 
 
 def parse_iso8601_utc_date(date_str: str) -> datetime:
