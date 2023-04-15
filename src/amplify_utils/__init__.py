@@ -1,4 +1,4 @@
-from json import loads
+from json import loads, dumps
 from typing import List
 from datetime import datetime
 
@@ -24,7 +24,7 @@ def iso8601_utc_now() -> str:
     return datetime.utcnow().astimezone().isoformat()
 
 
-def dump_errors(errors: List[dict]) -> List[dict]:
+def dump_pydantic_errors(errors: List[dict]) -> List[dict]:
     """
     Dumps the errors into a list of dictionaries with the following structure:
     {
@@ -32,6 +32,12 @@ def dump_errors(errors: List[dict]) -> List[dict]:
         'message': 'error_message'
     }
     """
+    assert isinstance(errors, list), 'Errors must be a list.'
+    assert errors, 'Errors must not be empty.'
+    for error in errors:
+        assert 'loc' in error, 'Missing "loc" key.'
+        assert 'msg' in error, 'Missing "msg" key.'
+
     dumped_errors = []
     for error in errors:
         if len(error['loc']) > 1:
@@ -48,8 +54,31 @@ def dump_errors(errors: List[dict]) -> List[dict]:
     return dumped_errors
 
 
-def dumps_errors(errors: List[dict]) -> str:
+def dump_errors(error_type: str, errors: List[dict]) -> str:
     """
     Dumps the errors into a JSON string
     """
-    return dumps(dump_errors(errors))
+    error_type = error_type.strip().replace(' ', '')
+    assert error_type, 'Error type must not be empty.'
+    assert errors, 'Errors must not be empty.'
+    for error in errors:
+        assert 'field' in error, 'Missing "field" key.'
+        assert 'message' in error, 'Missing "message" key.'
+    return {
+        'errors': {
+            'type': error_type,
+            'message': dumps(errors),
+        }
+    }
+
+
+def dump_error(error_type: str, error_field: str, error_message: str) -> str:
+    error_type = error_type.strip().replace(' ', '')
+    error_field = error_field.strip().replace(' ', '')
+    error_message = error_message.strip().replace(' ', '')
+    
+    assert error_type, 'Error type must not be empty.'
+    assert error_field, 'Error field must not be empty.'
+    assert error_message, 'Error message must not be empty'
+
+    return dump_errors(error_type, [{'field': error_field, 'message': error_message}])

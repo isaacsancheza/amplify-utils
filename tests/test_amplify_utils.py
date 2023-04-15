@@ -29,16 +29,65 @@ class Example(BaseModel):
         return v
 
 
-def test_dump_errors():
-    with pytest.raises(ValidationError):
+def test_dump_pydantic_errors():
+    try:
         example = Example(name='  1juan   ', phone='123 456 789', username='j1uan..')
-        assert amplify_utils.dump_errors(example.errors()) == {'name': ['Solo letras y espacios.'], 'username': ['No es un nombre de usuario valido.']}
-        example = Example(name='juan', phone='123 456 789', username='j1uan..')
-        assert amplify_utils.dump_errors(example.errors()) == {'username': ['No es un nombre de usuario valido.']}
-        example = Example(name='juan', phone='123 456 789', username='juan')
-        assert amplify_utils.dump_errors(example.errors()) == {}
-        example = Example(name='juan', phone='123 456 789', username='j1uan')
-        assert amplify_utils.dump_errors(example.errors()) == {}
+    except ValidationError as e:
+        assert amplify_utils.dump_pydantic_errors(e.errors()) == [
+            {
+                'field': 'name',
+                'message': 'Solo letras y espacios.',
+            },
+            {
+                'field': 'username',
+                'message': 'No es un nombre de usuario valido.',
+            }
+        ]
+    with pytest.raises(AssertionError):
+        amplify_utils.dump_pydantic_errors([])
+
+    with pytest.raises(AssertionError):
+        amplify_utils.dump_pydantic_errors([{'field': 'kappa', 'mes': ''}])
+
+
+def test_dump_errors():
+    try:
+        example = Example(name='  1juan   ', phone='123 456 789', username='j1uan..')
+    except ValidationError as e:
+        assert amplify_utils.dump_errors('VALIDATION', amplify_utils.dump_pydantic_errors(e.errors())) == {
+            'errors': {
+                'type': 'VALIDATION',
+                'message': dumps([
+                    {
+                        'field': 'name',
+                        'message': 'Solo letras y espacios.',
+                    },
+                    {
+                        'field': 'username',
+                        'message': 'No es un nombre de usuario valido.',
+                    }
+                ]),
+            },
+        }
+
+        with pytest.raises(AssertionError):
+            assert amplify_utils.dump_errors('', '')
+            assert amplify_utils.dump_errors(' ', ['hello'])
+            assert amplify_utils.dump_errors(' ', [])
+            assert amplify_utils.dump_errors(' ', [{'field': 'name', 'message': 'kappa'}])
+            assert amplify_utils.dump_errors('VALIDATION', [{'field': 'name', 'msg': 'kappa'}])
+
+
+def test_dump_error():
+    assert amplify_utils.dump_error('type', 'field', 'message') == {
+        'errors': {
+            'type': 'type',
+            'message': dumps([{'field': 'field', 'message': 'message'}])
+        }
+    }
+
+    with pytest.raises(AssertionError):
+        amplify_utils.dump_error('', 'field', 'message')
 
 
 def test_iso8601():
