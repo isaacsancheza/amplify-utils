@@ -58,7 +58,7 @@ def dump_errors(error_type: str, errors: List[dict]) -> str:
     """
     Dumps the errors into a JSON string
     """
-    error_type = error_type.strip().replace(' ', '')
+    error_type = error_type.strip()
     assert error_type, 'Error type must not be empty.'
     assert errors, 'Errors must not be empty.'
     for error in errors:
@@ -73,9 +73,9 @@ def dump_errors(error_type: str, errors: List[dict]) -> str:
 
 
 def dump_error(error_type: str, error_field: str, error_message: str) -> str:
-    error_type = error_type.strip().replace(' ', '')
-    error_field = error_field.strip().replace(' ', '')
-    error_message = error_message.strip().replace(' ', '')
+    error_type = error_type.strip()
+    error_field = error_field.strip()
+    error_message = error_message.strip()
     
     assert error_type, 'Error type must not be empty.'
     assert error_field, 'Error field must not be empty.'
