@@ -41,11 +41,10 @@ def dump_pydantic_errors(errors: List[dict]) -> List[dict]:
     dumped_errors = []
     for error in errors:
         if len(error['loc']) > 1:
-            for field in error['loc']:
-                dumped_errors.append({
-                    'field': field,
-                    'message': error['msg']
-                })
+            dumped_errors.append({
+                'field': error['loc'],
+                'message': error['msg'],
+            })
         else:
             dumped_errors.append({
                 'field': error['loc'][0],
