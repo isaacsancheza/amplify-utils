@@ -1,7 +1,5 @@
 from json import loads
 from typing import List
-from pprint import pprint
-from os.path import exists
 
 
 class Schema:
@@ -66,3 +64,6 @@ class Schema:
 
     def __build_denied(self, dtype: str, denied: List[str]) -> List[str]:
         return ['%s.%s' % (dtype, d) for d in denied]
+
+    def dump(self):
+        return self.types + self.fields + self.build_denied_queries(self.queries) + self.build_denied_mutations(self.mutations)

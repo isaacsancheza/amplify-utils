@@ -1,6 +1,8 @@
 from json import loads, dumps
 from typing import List
 from datetime import datetime
+from .schema import Schema
+from typing import Tuple, List
 
 
 def get_context(event: dict) -> dict:
@@ -81,3 +83,15 @@ def dump_error(error_type: str, error_field: str, error_message: str) -> str:
     assert error_message, 'Error message must not be empty'
 
     return dump_errors(error_type, [{'field': error_field, 'message': error_message}])
+
+
+def merge_schemas(*schemas: Tuple[str]) -> List[str]:
+    """
+    Receive an array of strings representings schema's path then
+    merge all theirs possible types, fields, queries, and mutations.
+    Usefull to merge denied's fields of role and global denied's fields.
+    """
+    denied_fields = []
+    for schema in [Schema(path) for path in schemas]:
+        denied_fields += schema.dump()
+    return list(set(denied_fields))
