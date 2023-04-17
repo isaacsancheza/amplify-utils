@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 amplify-utils = {editable = true, path = "."}
+pyyaml = "*"
 
 [dev-packages]
 pytest = "*"
