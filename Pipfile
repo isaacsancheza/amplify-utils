@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 amplify-utils = {editable = true, path = "."}
 pyyaml = "*"
+aws-lambda-powertools = "*"
 
 [dev-packages]
 pytest = "*"

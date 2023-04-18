@@ -16,7 +16,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["pyyaml"]
+dependencies = ["pyyaml", "aws-lambda-powertools"]
 
 [project.urls]
 "Homepage" = "https://github.com/isaacsancheza/amplify-utils"
