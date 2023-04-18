@@ -35,10 +35,12 @@ def test_dump_pydantic_errors():
     except ValidationError as e:
         assert amplify_utils.dump_pydantic_errors(e.errors()) == [
             {
+                'type': 'value_error',
                 'field': 'name',
                 'message': 'Solo letras y espacios.',
             },
             {
+                'type': 'value_error',
                 'field': 'username',
                 'message': 'No es un nombre de usuario valido.',
             }
@@ -59,10 +61,12 @@ def test_dump_errors():
                 'type': 'VALIDATION',
                 'message': dumps([
                     {
+                        'type': 'value_error',
                         'field': 'name',
                         'message': 'Solo letras y espacios.',
                     },
                     {
+                        'type': 'value_error',
                         'field': 'username',
                         'message': 'No es un nombre de usuario valido.',
                     }
@@ -75,7 +79,7 @@ def test_dump_errors():
             assert amplify_utils.dump_errors(' ', ['hello'])
             assert amplify_utils.dump_errors(' ', [])
             assert amplify_utils.dump_errors(' ', [{'field': 'name', 'message': 'kappa'}])
-            assert amplify_utils.dump_errors('VALIDATION', [{'field': 'name', 'msg': 'kappa'}])
+            assert amplify_utils.dump_errors('VALIDATION', [{'field': 'name', 'msg': 'kappa', 'type': 'value_error'}])
 
 
 def test_dump_error():

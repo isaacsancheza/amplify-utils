@@ -44,11 +44,13 @@ def dump_pydantic_errors(errors: List[dict]) -> List[dict]:
     for error in errors:
         if len(error['loc']) > 1:
             dumped_errors.append({
+                'type': error['type'],
                 'field': error['loc'],
                 'message': error['msg'],
             })
         else:
             dumped_errors.append({
+                'type': error['type'],
                 'field': error['loc'][0],
                 'message': error['msg']
             })
