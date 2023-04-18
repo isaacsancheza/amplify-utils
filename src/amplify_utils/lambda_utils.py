@@ -8,7 +8,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 
 def get_logger(level=None, **kwargs):
     level = level if level else 'DEBUG' if environ['ENV'] != 'prod' else 'INFO'
-    return Logger(level, **kwargs)
+    return Logger(level=level, **kwargs)
 
 
 def safe_handler(logger: Logger, **kwargs):
@@ -20,6 +20,6 @@ def safe_handler(logger: Logger, **kwargs):
                 return func(event, context) # def lambda_handler(event, context):
             except Exception as e:
                 logger.exception(e, exc_info=True)
-                return dump_error('SERVER_ERROR', 'NONE', 'Un error ocurrio, código: %s' % context.aws_request_id)
+                return dump_error('SERVER_ERROR', 'NONE', '%s' % context.aws_request_id)
         return wrapper
     return decorator
