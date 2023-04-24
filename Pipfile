@@ -7,11 +7,12 @@ name = "pypi"
 amplify-utils = {editable = true, path = "."}
 pyyaml = "*"
 aws-lambda-powertools = "*"
+pydantic = "*"
+soteria = {git = "https://github.com/isaacsancheza/soteria"}
 
 [dev-packages]
 pytest = "*"
-pydantic = "*"
-soteria = {git = "https://github.com/isaacsancheza/soteria"}
+mypy = "*"
 
 [requires]
 python_version = "3.8"

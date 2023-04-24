@@ -1,7 +1,7 @@
 import pytest
 import amplify_utils
-from json import loads, dumps
-from soteria import validators, normalizers
+from json import dumps
+from soteria import validations, normalizers
 from pydantic import BaseModel, ValidationError, validator
 
 
@@ -18,13 +18,13 @@ class Example(BaseModel):
 
     @validator('name')
     def validate_name(cls, v):
-        if not validators.is_spanish_letters_only(v):
+        if not validations.is_spanish_letters_only(v):
             raise ValueError('Solo letras y espacios.')
         return v
 
     @validator('username')
     def validate_username(cls, v):
-        if not validators.is_username(v):
+        if not validations.is_username(v):
             raise ValueError('No es un nombre de usuario valido.')
         return v
 
