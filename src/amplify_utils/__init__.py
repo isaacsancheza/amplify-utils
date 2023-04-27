@@ -2,10 +2,10 @@ from json import loads, dumps
 from typing import List
 from datetime import datetime
 from .schema import Schema
-from typing import Tuple, List
+from typing import Dict, List, Any
 
 
-def get_context(event: dict) -> dict:
+def get_context(event: Dict[str, Any]) -> Dict[str, Any]:
     """
     Returns the user from the event.
     """
@@ -26,7 +26,7 @@ def iso8601_utc_now() -> str:
     return datetime.utcnow().astimezone().isoformat()
 
 
-def dump_pydantic_errors(errors: List[dict]) -> List[dict]:
+def dump_pydantic_errors(errors: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Dumps the errors into a list of dictionaries with the following structure:
     {
@@ -57,7 +57,7 @@ def dump_pydantic_errors(errors: List[dict]) -> List[dict]:
     return dumped_errors
 
 
-def dump_errors(error_type: str, errors: List[dict]) -> str:
+def dump_errors(error_type: str, errors: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
     Dumps the errors into a JSON string
     """
@@ -75,7 +75,7 @@ def dump_errors(error_type: str, errors: List[dict]) -> str:
     }
 
 
-def dump_error(error_type: str, error_field: str, error_message: str) -> str:
+def dump_error(error_type: str, error_field: str, error_message: str) -> Dict[str, Any]:
     error_type = error_type.strip()
     error_field = error_field.strip()
     error_message = error_message.strip()
@@ -87,7 +87,7 @@ def dump_error(error_type: str, error_field: str, error_message: str) -> str:
     return dump_errors(error_type, [{'field': error_field, 'message': error_message}])
 
 
-def merge_schemas(*schemas: Tuple[str]) -> List[str]:
+def merge_schemas(*schemas: str) -> List[str]:
     """
     Receive an array of strings representings schema's path then
     merge all theirs possible types, fields, queries, and mutations.

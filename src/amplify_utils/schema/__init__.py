@@ -1,9 +1,9 @@
 from json import loads
-from typing import List
+from typing import List, Optional
 
 
 class Schema:
-    def __init__(self, path=None) -> None:
+    def __init__(self, path: Optional[str] = None):
         path = path if path else '/opt/schema.json'
         with open(path) as f:
             self._schema = loads(f.read())
@@ -65,5 +65,5 @@ class Schema:
     def __build_denied(self, dtype: str, denied: List[str]) -> List[str]:
         return ['%s.%s' % (dtype, d) for d in denied]
 
-    def dump(self):
+    def dump(self) -> List[str]:
         return self.types + self.fields + self.build_denied_queries(self.queries) + self.build_denied_mutations(self.mutations)

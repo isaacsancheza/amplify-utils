@@ -4,7 +4,7 @@ from argparse import FileType
 from argparse import ArgumentParser
 
 
-def convert_schema(source, dest):
+def convert_schema(source: str, dest: str) -> None:
     """
     Convert a xml file to json.
     """
@@ -22,7 +22,7 @@ def convert_schema(source, dest):
         dump(schema, f, indent=4)
 
 
-def diff_schema(a, b):
+def diff_schema(a: str, b: str) -> None:
     """
     Compares a given schema agains another one. b_schema should be the main schema.
     """ 
