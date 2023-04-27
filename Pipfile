@@ -9,10 +9,13 @@ pyyaml = "*"
 aws-lambda-powertools = "*"
 pydantic = "*"
 soteria = {git = "https://github.com/isaacsancheza/soteria"}
+aws-error-utils = "*"
 
 [dev-packages]
 pytest = "*"
 mypy = "*"
+autopep8 = "*"
+types-pyyaml = "*"
 
 [requires]
 python_version = "3.8"
